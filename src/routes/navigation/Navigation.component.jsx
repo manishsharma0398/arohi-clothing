@@ -28,11 +28,16 @@ const Navigation = () => {
           </Link>
           {currentUser ? (
             <span onClick={signOutUser} className="nav-link">
-              Log Out
+              SIGN OUT
             </span>
           ) : (
             <Link to="/auth" className="nav-link">
               SIGN IN
+            </Link>
+          )}
+          {currentUser && (
+            <Link to="/checkout" className="nav-link">
+              CHECK OUT
             </Link>
           )}
           <CartIcon />
