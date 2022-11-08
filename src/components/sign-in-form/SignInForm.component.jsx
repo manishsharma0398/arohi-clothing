@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 import {
   signInWithGooglePopup,
-  createUserDocumentFromAuth,
   signInAuthUserWithEmailAndPassword,
 } from "../../utils/firebase/firebase.utils";
 
@@ -12,14 +11,13 @@ import FormInput from "../../components/form-input/FormInput.component";
 import "./sign-in.styles.scss";
 
 const userDefaultInputs = {
-  email: "",
-  password: "",
+  loginEmail: "",
+  loginPassword: "",
 };
 
 const SignInForm = () => {
   const [formFields, setFormFields] = useState(userDefaultInputs);
-
-  const { email, password } = formFields;
+  const { loginEmail, loginPassword } = formFields;
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -28,19 +26,15 @@ const SignInForm = () => {
   };
 
   const logGoogleUser = async () => {
-    const { user } = await signInWithGooglePopup();
-    await createUserDocumentFromAuth(user);
+    await signInWithGooglePopup();
   };
 
   const handleLoginForm = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await signInAuthUserWithEmailAndPassword(
-        email,
-        password
-      );
-      console.log(response);
+      await signInAuthUserWithEmailAndPassword(loginEmail, loginPassword);
+
       setFormFields(userDefaultInputs);
     } catch (err) {
       switch (err.code) {
@@ -60,22 +54,22 @@ const SignInForm = () => {
     <div className="sign-up-container">
       <h2>Already have an account ?</h2>
       <span>Sign In with your email and password</span>
-      <form id="register-form" onSubmit={handleLoginForm}>
+      <form className="register-form" onSubmit={handleLoginForm}>
         <FormInput
           label="Email"
           type="email"
-          id="email"
+          id="loginEmail"
           onChange={handleChange}
-          value={email}
+          value={loginEmail}
           required
         />
 
         <FormInput
           label="Password"
           type="password"
-          id="password"
+          id="loginPassword"
           onChange={handleChange}
-          value={password}
+          value={loginPassword}
           required
         />
 
